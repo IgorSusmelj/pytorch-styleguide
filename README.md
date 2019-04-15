@@ -1,20 +1,21 @@
 # A PyTorch Tools, best practices & Styleguide
-This is not an official styleguide for PyTorch. This document summarizes best practices from mor than a year of experience with deep learning using the PyTorch framework. Note that the learnings we share come mostly from a research and startup perspective.
+This is not an official style guide for PyTorch. This document summarizes best practices from more than a year of experience with deep learning using the PyTorch framework. Note that the learnings we share come mostly from a research and startup perspective.
 
-This is an open project and other collaboraters are highly welcomed to edit and improve the document.
+This is an open project and other collaborators are highly welcomed to edit and improve the document.
 
-You will find three main parts in this doc. First a quick recap of best practices in Python, followed by some tips and recommendations using PyTorch. Finally, we share some insights and experiences using other frameworks which helped us generally improve our workflow.
+You will find three main parts of this doc. First, a quick recap of best practices in Python, followed by some tips and recommendations using PyTorch. Finally, we share some insights and experiences using other frameworks which helped us generally improve our workflow.
 
-## Python Styleguide recap
-We try to follow the Google Styleguide for Python.
-Please refer to the well documented  [style guide on python code provided by Google](https://github.com/google/styleguide/blob/gh-pages/pyguide.md).
-
-We provide here a summary of the most commonly used rules:
-
-### We recommend using Python 3.6+
+## We recommend using Python 3.6+
 From our experience we recommend using Python 3.6+ because of the following features which became very handy for clean and simple code:
 * [Support for typing since Python 3.6.](https://medium.com/@ageitgey/learn-how-to-use-static-type-checking-in-python-3-6-in-10-minutes-12c86d72677b)
 * [Support of f strings since Python 3.6](https://realpython.com/python-f-strings/)
+
+
+## Python Styleguide recap
+We try to follow the Google Styleguide for Python.
+Please refer to the well-documented  [style guide on python code provided by Google](https://github.com/google/styleguide/blob/gh-pages/pyguide.md).
+
+We provide here a summary of the most commonly used rules:
 
 ### Naming Conventions
 *From 3.16.4*
@@ -31,7 +32,7 @@ From our experience we recommend using Python 3.6+ because of the following feat
 ## IDEs
 
 ### Code Editors
-In general we recommend the use of an IDE such as visual stuio code or PyCharm. Whereas VS Code provides syntax highliting and autocompletion in a relative light weight editor PyCharm has lots of advanced features for working with remote clusters.
+In general, we recommend the use of an IDE such as visual studio code or PyCharm. Whereas VS Code provides syntax highlighting and autocompletion in a relatively lightweight editor PyCharm has lots of advanced features for working with remote clusters.
 
 #### Setting up PyCharm to work with a Remote Machine
 1. Login to your remote machine (AWS, Google etc.)
@@ -40,12 +41,12 @@ In general we recommend the use of an IDE such as visual stuio code or PyCharm. 
 4. Configure the remote python interpreter (path to venv on AWS, Google etc.)
 5. Configure the mapping of the code from your local machine to the remote machine
 
-If setup properly this allows you to do the following:
+If set up properly this allows you to do the following:
 * Code on your local computer (notebook, desktop) wherever you want (offline, online)
 * Sync local code with your remote machine
-* Additional packages will be installed automatically on remote machine
+* Additional packages will be installed automatically on a remote machine
 * You don't need any dataset on your local machine
-* Run code and debug on the remote machine as if it would be your local machine running the code
+* Run the code and debug on the remote machine as if it would be your local machine running the code
 
 ## Libraries
 
@@ -59,16 +60,16 @@ Commonly used libraries:
 | Numpy | Matrix library | Data preprocessing & postprocessing |
 | prefetch_generator | Librayr for background processing | Loading next batch in background during computation |
 | tqdm | Progress bar | Progress during training of each epoch |
-| torchsummary | Keras summary for pytorch | Displays network, it's parameters and sizes at each layer |
+| torchsummary | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
 | tensorboardx | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
 
 ## File Organization
-Don't put all layers and models into the same file. Best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses and ops in respective files (*layers.py*, *losses.py*, *ops.py*). For smaller experiments it's enough to keep them all in *layers.py*.
+Don't put all layers and models into the same file. A best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses, and ops in respective files (*layers.py*, *losses.py*, *ops.py*). For smaller experiments, it's enough to keep them all in *layers.py*.
 
 The main routine, respective the train and test scripts should only import from the *networks.py* file.
 
-## Building a Neural Network in Pytorch
-We recommend breaking up the network into its smaller reusable pieces. A network is a **nn.Module** consisting of operations or other **nn.Module**s as building blocks. Loss functions are also **nn.Module** and can therefore be directly integrated into the network.
+## Building a Neural Network in PyTorch
+We recommend breaking up the network into its smaller reusable pieces. A network is a **nn.Module** consisting of operations or other **nn.Module**s as building blocks. Loss functions are also **nn.Module** and can, therefore, be directly integrated into the network.
 
 A class inheriting from **nn.Module** must have a *forward* method implementing the forward pass of the respective layer or operation. 
 
@@ -80,8 +81,8 @@ output = self.net.forward(input)
 output = self.net(input)
 ```
 
-### A Simple Network in Pytorch
-Use the following pattern for simple networks with single input and single output:
+### A Simple Network in PyTorch
+Use the following pattern for simple networks with a single input and single output:
 ``` python
 class ConvBlock(nn.Module):
     def __init__(self):
@@ -96,7 +97,7 @@ class ConvBlock(nn.Module):
 
 class SimpleNetwork(nn.Module):
     def __init__(self, num_resnet_blocks=6):
-        super(Resnet, self).__init__()
+        super(SimpleNetwork, self).__init__()
         # here we add the individual layers
         layers = [ConvBlock(...)]
         for i in range(num_resnet_blocks):
@@ -109,10 +110,10 @@ class SimpleNetwork(nn.Module):
 
 Note the following:
 * We reuse simple, recurrent building blocks such as *ConvBlock* which consists of the same recurrent pattern of (convolution, activation, normalization) and put them into a separate nn.Module
-* We build up a list of desired layers and finally turn them into into a model using *nn.Sequential()*. We use the * operator before the list object to unwrap it.
+* We build up a list of desired layers and finally turn them into a model using *nn.Sequential()*. We use the * operator before the list object to unwrap it.
 * In the forward pass we just run the input through the model
 
-### A Network with skip connections in Pytorch
+### A Network with skip connections in PyTorch
 ``` python
 class ResnetBlock(nn.Module):
     def __init__(self, dim, padding_type, norm_layer, use_dropout, use_bias):
@@ -138,9 +139,9 @@ class ResnetBlock(nn.Module):
         return out
 ```
 
-Here the skip connection of a *ResNet block* has been implemented directly in the forward pass. Pytorch allows for dynamic operations during the forward pass. 
+Here the skip connection of a *ResNet block* has been implemented directly in the forward pass. PyTorch allows for dynamic operations during the forward pass. 
 
-### A Network with multiple outputs in Pytorch
+### A Network with multiple outputs in PyTorch
 For a network requiring multiple outputs, such as building a perceptual loss using a pretrained VGG network we use the following pattern:
 ``` python
 class Vgg19(torch.nn.Module):
@@ -170,14 +171,14 @@ class Vgg19(torch.nn.Module):
 ```
 Note here the following:
 * We use a pretrained model provided by *torchvision*.
-* We split up the network into three slices. Each slices consists of layers from the pretrained model.
+* We split up the network into three slices. Each slice consists of layers from the pretrained model.
 * We *freeze* the network by setting *requires_grad = False*
 * We return a list with the three outputs of our slices
 
 ## Recommended code structure for training your model
 Note that we used the following patterns:
 * We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background
-* We use tqdm to monitor training progress and show the *compute efficiency*. This helps us finding bottlenecks in our data loading pipeline.
+* We use tqdm to monitor training progress and show the *compute efficiency*. This helps us find bottlenecks in our data loading pipeline.
 
 ``` python
 # import statements
@@ -317,22 +318,22 @@ if __name__ == '__main__':
 
 ## Training on Multiple GPUs in PyTorch
 There are two distinct patterns in PyTorch to use multiple GPUs for training.
-From our experience both patterns are valid. The first one results however in nicer and less code. The second one seems to have a slight performance advantage due to less communication between the GPUs. [I asked a question in the official pytorch forum about the two approaches here](https://discuss.pytorch.org/t/how-to-best-use-dataparallel-with-multiple-models/39289)
+From our experience both patterns are valid. The first one results however in nicer and less code. The second one seems to have a slight performance advantage due to less communication between the GPUs. [I asked a question in the official PyTorch forum about the two approaches here](https://discuss.pytorch.org/t/how-to-best-use-dataparallel-with-multiple-models/39289)
 
 ### Split up the batch input of each network
-The most common one is to simple split up the batches of all *networks* to the individual GPUs. 
-> A model running on 1 GPU with batch size 64 would therefore run on 2 GPUs with each a batch size of 32.
+The most common one is to simply split up the batches of all *networks* to the individual GPUs. 
+> A model running on 1 GPU with batch size 64 would, therefore, run on 2 GPUs with each a batch size of 32. This can be done automatically by wrapping the model by **nn.DataParallel(model)**.
 
 ### Pack all networks in a *super* network and split up input batch
 This pattern is less commonly used. A repository implemnting this approach is shown here in the [pix2pixHD implementation by Nvidia](https://github.com/NVIDIA/pix2pixHD)
 
 
 ## Do's and Don't's
-### Avoid Numpy Code in Forward Method of a nn.Module
+### Avoid Numpy Code in the forward method of a nn.Module
 Numpy runs on the CPU and is slower than torch code. Since torch has been developed with being similar to numpy in mind most numpy functions are supported by PyTorch already.
 
 ### Separate the DataLoader from the main Code
-The dataloading pipeline should be independent of your main training code. PyTorch uses background workers for loading the data more efficiently and witout disturbing the main training process.
+The data loading pipeline should be independent of your main training code. PyTorch uses background workers for loading the data more efficiently and without disturbing the main training process.
 
 ### Don't log results in every step
 Typically we train our models for thousands of steps. Therefore, it is enough to log loss and other results every n'th step to reduce the overhead. Especially, saving intermediary results as images can be costly during training.
@@ -353,21 +354,21 @@ You can print variables directly, however it's recommended to use **variable.dat
 
 ## FAQ
 1. How to keep my experiments reproducible?
-> We recommend setting the following seeds in the beginning of your code:
+> We recommend setting the following seeds at the beginning of your code:
 ``` python
 np.random.seed(1)
 torch.manual_seed(1)
 torch.cuda.manual_seed(1)
 ```
 2. How to improve training and inference speed further?
-> On Nvidia GPUs you can add the following line at the beginning of our code. This will allow the cuda backend to optimize your graph during it's first execution. However, be aware that if you change the network input/output tensor size the graph will be optimized each time a change occurs. This can lead to very slow runtime and out of memory errors. Only set this flag if your input and output have always the same shape. Usually, this results in an improvement of about 20%.
+> On Nvidia GPUs you can add the following line at the beginning of our code. This will allow the cuda backend to optimize your graph during its first execution. However, be aware that if you change the network input/output tensor size the graph will be optimized each time a change occurs. This can lead to very slow runtime and out of memory errors. Only set this flag if your input and output have always the same shape. Usually, this results in an improvement of about 20%.
 ``` python
 torch.backends.cudnn.benchmark = True
 ```
 3. What is a good value for compute efficiency using your tqdm + prefetch_generator pattern?
-> It depends on the machine used, the preprocessing pipeline and the network size. Running on a SSD on a 1080Ti GPU we see a compute efficiency of almost 1.0 which is an ideal scenario. If shallow (small) networks or a slow harddist is used the number may drop to around 0.1-0.2 depending on your setup.
+> It depends on the machine used, the preprocessing pipeline and the network size. Running on a SSD on a 1080Ti GPU we see a compute efficiency of almost 1.0 which is an ideal scenario. If shallow (small) networks or a slow harddisk is used the number may drop to around 0.1-0.2 depending on your setup.
 4. How can I have a batch size > 1 even though I don't have enough memory?
-> In Pytorch we can implement very easily virtual batch sizes. We just prevent the optimizer from making an update of the parameters and sum up the gradients for *batch_size* cycles.
+> In PyTorch we can implement very easily virtual batch sizes. We just prevent the optimizer from making an update of the parameters and sum up the gradients for *batch_size* cycles.
 ``` python
 ...
 # in the main loop
@@ -423,5 +424,6 @@ with torch.no_grad():
     out_tensor = net(in_tensor)
 ```
 9. How to use multiple GPUs for training?
-> Please have a look at the 
+> Todo...
 10. When to use Variable(...)?
+> Todo...
