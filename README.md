@@ -58,15 +58,15 @@ Commonly used libraries:
 | torchvision | todo | data preprocessing, augmentation, postprocessing |
 | Pillow (PIL) | Image loading and saving library | Loading images and storing them |
 | Numpy | Matrix library | Data preprocessing & postprocessing |
-| prefetch_generator | Librayr for background processing | Loading next batch in background during computation |
+| prefetch_generator | Library for background processing | Loading next batch in background during computation |
 | tqdm | Progress bar | Progress during training of each epoch |
 | torchsummary | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
 | tensorboardx | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
 
 ## File Organization
-Don't put all layers and models into the same file. A best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses, and ops in respective files (*layers.py*, *losses.py*, *ops.py*). For smaller experiments, it's enough to keep them all in *layers.py*.
+Don't put all layers and models into the same file. A best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses, and ops in respective files (*layers.py*, *losses.py*, *ops.py*). The finished model (composed of one or multiple networks) should be reference in a file with its name (e.g. *yolov3.py*, *DCGAN.py*)
 
-The main routine, respective the train and test scripts should only import from the *networks.py* file.
+The main routine, respective the train and test scripts should only import from the file having the model's name.
 
 ## Building a Neural Network in PyTorch
 We recommend breaking up the network into its smaller reusable pieces. A network is a **nn.Module** consisting of operations or other **nn.Module**s as building blocks. Loss functions are also **nn.Module** and can, therefore, be directly integrated into the network.
