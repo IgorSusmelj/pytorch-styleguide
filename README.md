@@ -175,6 +175,20 @@ Note here the following:
 * We *freeze* the network by setting *requires_grad = False*
 * We return a list with the three outputs of our slices
 
+## Custom Loss
+Even if PyTorch already has a lot of of standard loss function it might be necessary sometimes to create your own loss function. For this, create a separate file `losses.py` and extend the `nn.Module` class to create your custom loss function:
+
+```python
+class CustomLoss(torch.nn.Module):
+    
+    def __init__(self):
+        super(CustomLoss,self).__init__()
+        
+    def forward(self,x,y):
+        loss = torch.mean((x - y)**2)
+        return loss
+```
+
 ## Recommended code structure for training your model
 Note that we used the following patterns:
 * We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background
