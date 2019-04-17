@@ -48,20 +48,42 @@ If set up properly this allows you to do the following:
 * You don't need any dataset on your local machine
 * Run the code and debug on the remote machine as if it would be your local machine running the code
 
+
+## Jupyter Notebook vs Python Scripts
+In general, we recommend to use jupyter notebooks for initial exploration/ playing around with new models and code.
+Python scripts should be used as soon as you want to train the model on a bigger dataset where also reproducibility is more important.
+
+**Our recommended workflow:**
+1. Start with a jupyter notebook
+2. Explore the data and models
+3. Build your classes/ methods inside cells of the notebook
+4. Move your code to python scripts
+5. Train/ deploy on server
+
+
+| **Jupyter Notebook** | **Python Scripts** |
+|----------------------|--------------------|
+| + Exploration | + Running longer jobs without interruption |
+| + Debugging | + Easy to track changes with git |
+| - Can become a huge file| - Debugging mostly means rerunning the whole script|
+| - Can be interrupted (don't use for long training) | |
+| - Prone to errors and become a mess | |
+
+
 ## Libraries
 
 Commonly used libraries:
 
 | Name | Description | Used for |
 |------|-------------|----------|
-| torch | Base Framework for working with neural networks | creating tensors, networks and training them using backprop |
-| torchvision | todo | data preprocessing, augmentation, postprocessing |
-| Pillow (PIL) | Image loading and saving library | Loading images and storing them |
-| Numpy | Matrix library | Data preprocessing & postprocessing |
-| prefetch_generator | Librayr for background processing | Loading next batch in background during computation |
-| tqdm | Progress bar | Progress during training of each epoch |
-| torchsummary | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
-| tensorboardx | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
+| [torch](https://pytorch.org/) | Base Framework for working with neural networks | creating tensors, networks and training them using backprop |
+| [torchvision](https://pytorch.org/docs/stable/torchvision) | todo | data preprocessing, augmentation, postprocessing |
+| [Pillow (PIL)](https://pillow.readthedocs.io/en/stable/) | Python Imaging Library | Loading images and storing them |
+| [Numpy](https://www.numpy.org/) | Package for scientific computing with Python | Data preprocessing & postprocessing |
+| [prefetch_generator](https://pypi.org/project/prefetch_generator/) | Library for background processing | Loading next batch in background during computation |
+| [tqdm](https://github.com/tqdm/tqdm) | Progress bar | Progress during training of each epoch |
+| [torchsummary](https://github.com/sksq96/pytorch-summary) | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
+| [tensorboardx](https://github.com/lanpa/tensorboardX) | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
 
 ## File Organization
 Don't put all layers and models into the same file. A best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses, and ops in respective files (*layers.py*, *losses.py*, *ops.py*). For smaller experiments, it's enough to keep them all in *layers.py*.
@@ -184,7 +206,6 @@ Note that we used the following patterns:
 # import statements
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
 from torch.utils import data
 ...
 
@@ -277,8 +298,6 @@ if __name__ == '__main__':
             if use_cuda:
                 img = img.cuda()
                 label = label.cuda()
-            img = Variable(img)
-            label = Variable(label)
             ...
             
             # It's very good practice to keep track of preparation time and computation time using tqdm to find any issues in your dataloader
@@ -349,8 +368,11 @@ with open("config.txt", "w") as f:
 ...
 ```
 
-### Use **.data** or **.item()** for printing autograd variables
-You can print variables directly, however it's recommended to use **variable.data** or **variable.item()**. People reported wrong numbers in earlier PyTorch versions when just printing the variables without **.data**.
+### Use **.detach()** to free tensors from the graph if possible
+PyTorch keeps track of of all operations involving tensors for automatic differentiation. Use **.detach()** to prevent recording of unnecessary operations.
+
+### Use **.item()** for printing scalar tensors
+You can print variables directly, however it's recommended to use **variable.detach()** or **variable.item()**. In earlier PyTorch versions < 0.4 you have to use **.data** to access the tensor of a variable.
 
 ## FAQ
 1. How to keep my experiments reproducible?
@@ -423,7 +445,26 @@ with torch.no_grad():
     # run model here
     out_tensor = net(in_tensor)
 ```
-9. How to use multiple GPUs for training?
+9. How to fine-tune a pretrained model?
+> In PyTorch you can freeze layers. This will prevent them from being updated during an optimization step.
+``` python
+
+# you can freeze whole modules using
+for p in pretrained_VGG.parameters():  # reset requires_grad
+    p.requires_grad = False
+
+```
+10. When to use **Variable(...)**?
+> Since PyTorch 0.4 **Variable* and **Tensor** have been merged. We don't have to explicitly create a **Variable** object anymore.
+11. Is PyTorch on C++ faster then using Python?
+> C++ version is about 10% faster
+12. Can TorchScript / JIT speed up my code?
 > Todo...
-10. When to use Variable(...)?
+13. Is PyTorch code using **cudnn.benchmark=True** faster?
+> From our experience you can gain about 20% speed-up. But the first time you run your model it takes quite some time to 
+build the optimized graph. In some cases (loops in forward pass, no fixed input shape, if/else in forward, etc.) this flag might
+result in *out of memory* or other errors.
+14. How to use multiple GPUs for training?
 > Todo...
+15. How does **.detach()** work in PyTorch?
+> If frees a tensor from a computation graph. A nice illustration is shown [here](http://www.bnikolic.co.uk/blog/pytorch-detach.html)
