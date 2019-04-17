@@ -96,11 +96,9 @@ We recommend breaking up the network into its smaller reusable pieces. A network
 
 A class inheriting from **nn.Module** must have a *forward* method implementing the forward pass of the respective layer or operation. 
 
-A **nn.module** can be used on input data in two ways whereas the latter one is commonly used for better readability. **self.net(input)** simply uses the *__call__()* method of the object to feed the input through the module.
+A **nn.module** can be used on input data using **self.net(input)**. This simply uses the *__call__()* method of the object to feed the input through the module.
 
 ``` python
-output = self.net.forward(input)
-# or
 output = self.net(input)
 ```
 
@@ -388,6 +386,14 @@ PyTorch keeps track of of all operations involving tensors for automatic differe
 
 ### Use **.item()** for printing scalar tensors
 You can print variables directly, however it's recommended to use **variable.detach()** or **variable.item()**. In earlier PyTorch versions < 0.4 you have to use **.data** to access the tensor of a variable.
+
+### Use the call method instead of forward on a **nn.Module**
+The two ways are not identical as pointed out in one of the issues [here](https://github.com/IgorSusmelj/pytorch-styleguide/issues/3):
+``` python
+output = self.net.forward(input)
+# they are not equal!
+output = self.net(input)
+```
 
 ## FAQ
 1. How to keep my experiments reproducible?
