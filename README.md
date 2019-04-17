@@ -85,10 +85,11 @@ Commonly used libraries:
 | [torchsummary](https://github.com/sksq96/pytorch-summary) | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
 | [tensorboardx](https://github.com/lanpa/tensorboardX) | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
 
-## File Organization
-Don't put all layers and models into the same file. A best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses, and ops in respective files (*layers.py*, *losses.py*, *ops.py*). For smaller experiments, it's enough to keep them all in *layers.py*.
 
-The main routine, respective the train and test scripts should only import from the *networks.py* file.
+## File Organization
+Don't put all layers and models into the same file. A best practice is to separate the final networks into a separate file (*networks.py*) and keep the layers, losses, and ops in respective files (*layers.py*, *losses.py*, *ops.py*). The finished model (composed of one or multiple networks) should be reference in a file with its name (e.g. *yolov3.py*, *DCGAN.py*)
+
+The main routine, respective the train and test scripts should only import from the file having the model's name.
 
 ## Building a Neural Network in PyTorch
 We recommend breaking up the network into its smaller reusable pieces. A network is a **nn.Module** consisting of operations or other **nn.Module**s as building blocks. Loss functions are also **nn.Module** and can, therefore, be directly integrated into the network.
@@ -196,6 +197,20 @@ Note here the following:
 * We split up the network into three slices. Each slice consists of layers from the pretrained model.
 * We *freeze* the network by setting *requires_grad = False*
 * We return a list with the three outputs of our slices
+
+## Custom Loss
+Even if PyTorch already has a lot of of standard loss function it might be necessary sometimes to create your own loss function. For this, create a separate file `losses.py` and extend the `nn.Module` class to create your custom loss function:
+
+```python
+class CustomLoss(torch.nn.Module):
+    
+    def __init__(self):
+        super(CustomLoss,self).__init__()
+        
+    def forward(self,x,y):
+        loss = torch.mean((x - y)**2)
+        return loss
+```
 
 ## Recommended code structure for training your model
 Note that we used the following patterns:
@@ -468,3 +483,4 @@ result in *out of memory* or other errors.
 > Todo...
 15. How does **.detach()** work in PyTorch?
 > If frees a tensor from a computation graph. A nice illustration is shown [here](http://www.bnikolic.co.uk/blog/pytorch-detach.html)
+
