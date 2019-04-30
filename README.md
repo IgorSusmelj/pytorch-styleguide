@@ -5,6 +5,13 @@ This is an open project and other collaborators are highly welcomed to edit and 
 
 You will find three main parts of this doc. First, a quick recap of best practices in Python, followed by some tips and recommendations using PyTorch. Finally, we share some insights and experiences using other frameworks which helped us generally improve our workflow.
 
+
+**Update 30.4.2019**
+>After so much positive feedback I also added a summary of commonly used building blocks from our projects at [Mirage]():
+You will find building blocks for (Self-Attention, Perceptual Loss using VGG, Spectral Normalization, Adaptive Instance Normalization, ...)
+[Code Snippets for Losses, Layers and other building blocks](building_blocks.md)
+
+
 ## We recommend using Python 3.6+
 From our experience we recommend using Python 3.6+ because of the following features which became very handy for clean and simple code:
 * [Support for typing since Python 3.6.](https://medium.com/@ageitgey/learn-how-to-use-static-type-checking-in-python-3-6-in-10-minutes-12c86d72677b)
@@ -165,7 +172,7 @@ Here the skip connection of a *ResNet block* has been implemented directly in th
 ### A Network with multiple outputs in PyTorch
 For a network requiring multiple outputs, such as building a perceptual loss using a pretrained VGG network we use the following pattern:
 ``` python
-class Vgg19(torch.nn.Module):
+class Vgg19(nn.Module):
   def __init__(self, requires_grad=False):
     super(Vgg19, self).__init__()
     vgg_pretrained_features = models.vgg19(pretrained=True).features
@@ -200,7 +207,7 @@ Note here the following:
 Even if PyTorch already has a lot of of standard loss function it might be necessary sometimes to create your own loss function. For this, create a separate file `losses.py` and extend the `nn.Module` class to create your custom loss function:
 
 ```python
-class CustomLoss(torch.nn.Module):
+class CustomLoss(nn.Module):
     
     def __init__(self):
         super(CustomLoss,self).__init__()
@@ -212,7 +219,7 @@ class CustomLoss(torch.nn.Module):
 
 ## Recommended code structure for training your model
 Note that we used the following patterns:
-* We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background
+* We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background  [see this issue for more information](https://github.com/YuliangXiu/MobilePose-pytorch)
 * We use tqdm to monitor training progress and show the *compute efficiency*. This helps us find bottlenecks in our data loading pipeline.
 
 ``` python
@@ -357,7 +364,7 @@ The most common one is to simply split up the batches of all *networks* to the i
 > A model running on 1 GPU with batch size 64 would, therefore, run on 2 GPUs with each a batch size of 32. This can be done automatically by wrapping the model by **nn.DataParallel(model)**.
 
 ### Pack all networks in a *super* network and split up input batch
-This pattern is less commonly used. A repository implemnting this approach is shown here in the [pix2pixHD implementation by Nvidia](https://github.com/NVIDIA/pix2pixHD)
+This pattern is less commonly used. A repository implementing this approach is shown here in the [pix2pixHD implementation by Nvidia](https://github.com/NVIDIA/pix2pixHD)
 
 
 ## Do's and Don't's
