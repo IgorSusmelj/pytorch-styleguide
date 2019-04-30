@@ -219,7 +219,7 @@ class CustomLoss(nn.Module):
 
 ## Recommended code structure for training your model
 Note that we used the following patterns:
-* We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background  [see this issue for more information](https://github.com/YuliangXiu/MobilePose-pytorch)
+* We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background  [see this issue for more information](https://github.com/IgorSusmelj/pytorch-styleguide/issues/5)
 * We use tqdm to monitor training progress and show the *compute efficiency*. This helps us find bottlenecks in our data loading pipeline.
 
 ``` python
