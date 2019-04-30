@@ -7,9 +7,9 @@ You will find three main parts of this doc. First, a quick recap of best practic
 
 
 **Update 30.4.2019**
->After so much positive feedback I also added a summary of commonly used building blocks from our projects at [Mirage]():
+>After so much positive feedback I also added a summary of commonly used building blocks from our projects at [Mirage](https://mirage.id/):
 You will find building blocks for (Self-Attention, Perceptual Loss using VGG, Spectral Normalization, Adaptive Instance Normalization, ...)
-[Code Snippets for Losses, Layers and other building blocks](building_blocks.md)
+<br>[Code Snippets for Losses, Layers and other building blocks](building_blocks.md)
 
 
 ## We recommend using Python 3.6+
