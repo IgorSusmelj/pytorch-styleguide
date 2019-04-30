@@ -6,8 +6,8 @@ This is a summary of commonly used 'building blocks' for your PyTorch projects w
 
 ### Spectral Normalization
 
-| [Github Source](https://github.com/heykeetae/Self-Attention-GAN/blob/master/spectral.py) |[Original Paper](https://arxiv.org/abs/1802.05957) |
-|-|-|-|
+|[Github Source](https://github.com/heykeetae/Self-Attention-GAN/blob/master/spectral.py)|[Original Paper](https://arxiv.org/abs/1802.05957)|
+|-|-|
 
 ##### Usage
 Wrap the layer to which you want to apply spectral normalization.
