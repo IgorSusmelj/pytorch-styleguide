@@ -1,20 +1,13 @@
-This is a summary of commonly used 'building blocks' for your PyTorch projects which have been gathered from different sources
-over the last year. 
-Use them carefully, at best have a look
-at the original paper to learn more about them. Most of them have been used and tested on PyTorch 1.0 and worked well. 
-Usually, there are other implementations available. The ones you find here were just the most convenient ones to use on 
-a personal level.
-
+This is a summary of commonly used 'building blocks' for your PyTorch projects which have been gathered from different sources over the last year. Use them carefully, at best have a look at the original paper to learn more about them. Most of them have been used and tested on PyTorch 1.0 and worked well. Usually, there are other implementations available. The ones you find here were just the most convenient ones to use on a personal level.
 
 **Disclaimer:**
-*I added sources on how I found the implementations. Those might be unofficial sources or not the first publications using the
-mentioned methods. If you find any error let me know and I will update this summary.*
+*I added sources on how I found the implementations. Those might be unofficial sources or not the first publications using the mentioned methods. If you find any error let me know and I will update this summary.*
 
 
 ### Spectral Normalization
 
-[Github Source](https://github.com/heykeetae/Self-Attention-GAN/blob/master/spectral.py)
-[Original Paper](https://arxiv.org/abs/1802.05957)
+| [Github Source](https://github.com/heykeetae/Self-Attention-GAN/blob/master/spectral.py) |[Original Paper](https://arxiv.org/abs/1802.05957) |
+|-|-|-|
 
 ##### Usage
 Wrap the layer to which you want to apply spectral normalization.
@@ -139,7 +132,8 @@ class SpectralNorm(nn.Module):
 
 ### Adaptive Instance Normalization
 
-[Github Source](https://github.com/rosinality/style-based-gan-pytorch/blob/master/model.py)
+|[Github Source](https://github.com/rosinality/style-based-gan-pytorch/blob/master/model.py)|
+|-|
 
 ##### Usage
 
@@ -192,8 +186,7 @@ class ResnetBlockX(nn.Module):
         return out
 ```
 
-Don't forget that we now have two inputs to the forward pass (x, style)
-Building a small model would look something like this (I copy pasted code from a project I used and verified that it worked):
+Don't forget that we now have two inputs to the forward pass (x, style). Building a small model would look something like this (I copy pasted code from a project I used and verified that it worked):
 
 ```python
 class ResnetGeneratorX(nn.Module):
@@ -353,7 +346,8 @@ class AdaptiveInstanceNorm(nn.Module):
 ```
 
 ### Init Weights
-[Github Source](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
+|[Github Source](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)|
+|-|
 
 
 ##### Usage
@@ -408,7 +402,8 @@ def to_one_hot(y, n_dims=None):
 
 
 ### GAN Loss
-[Github Source](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
+|[Github Source](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)|
+|-|
 
 
 ```python
@@ -515,7 +510,8 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
 ```
 
 ### Perceptual Loss (VGG19)
-[Github Source](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
+|[Github Source](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)|
+|-|
 
 ##### Usage
 
@@ -593,8 +589,8 @@ class Vgg19(torch.nn.Module):
 ```
 
 ### Self-Attention Layer
-[Github Source](https://github.com/heykeetae/Self-Attention-GAN/blob/master/sagan_models.py)
-[Original Paper](https://arxiv.org/abs/1805.08318)
+|[Github Source](https://github.com/heykeetae/Self-Attention-GAN/blob/master/sagan_models.py)|[Original Paper](https://arxiv.org/abs/1805.08318)|
+|-|-|
 
 ##### Usage
 You can add it to an existing model as a new layer.
@@ -653,8 +649,6 @@ class DCGANDiscriminator(nn.Module):
     def forward(self, x):
         return self.main(x)
 ```
-
-
 ##### Code
 
 ```python
