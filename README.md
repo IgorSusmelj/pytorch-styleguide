@@ -6,8 +6,13 @@ This is an open project and other collaborators are highly welcomed to edit and 
 You will find three main parts of this doc. First, a quick recap of best practices in Python, followed by some tips and recommendations using PyTorch. Finally, we share some insights and experiences using other frameworks which helped us generally improve our workflow.
 
 
+**Update 20.12.2020**
+
+- Added a full example training a model on cifar10
+- Add setup guide for using VS Code and the remote extension
+
 **Update 30.4.2019**
->After so much positive feedback I also added a summary of commonly used building blocks from our projects at [Mirage](https://mirage.id/):
+>After so much positive feedback I also added a summary of commonly used building blocks from our projects at [Lightly](https://lightly.ai/):
 You will find building blocks for (Self-Attention, Perceptual Loss using VGG, Spectral Normalization, Adaptive Instance Normalization, ...)
 <br>[Code Snippets for Losses, Layers and other building blocks](building_blocks.md)
 
@@ -39,7 +44,17 @@ We provide here a summary of the most commonly used rules:
 ## IDEs
 
 ### Code Editors
-In general, we recommend the use of an IDE such as visual studio code or PyCharm. Whereas VS Code provides syntax highlighting and autocompletion in a relatively lightweight editor PyCharm has lots of advanced features for working with remote clusters.
+In general, we recommend the use of an IDE such as visual studio code or PyCharm. ~~Whereas VS Code provides syntax highlighting and autocompletion in a relatively lightweight editor PyCharm has lots of advanced features for working with remote clusters.~~
+VS Code has become very powerful with its fast growing ecosystem of extensions.
+
+#### Setting up Visual Studio Code with a Remote Machine
+Make sure you have the following extensions installed:
+
+- Python  (linting, autocompletion, syntax highlighting, code formatting)
+- Remote - SSH (to work with remote machines)
+
+1. Follow the guide here: https://code.visualstudio.com/docs/remote/remote-overview
+
 
 #### Setting up PyCharm to work with a Remote Machine
 1. Login to your remote machine (AWS, Google etc.)
@@ -90,7 +105,7 @@ Commonly used libraries:
 | [prefetch_generator](https://pypi.org/project/prefetch_generator/) | Library for background processing | Loading next batch in background during computation |
 | [tqdm](https://github.com/tqdm/tqdm) | Progress bar | Progress during training of each epoch |
 | [torchsummary](https://github.com/sksq96/pytorch-summary) | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
-| [tensorboardx](https://github.com/lanpa/tensorboardX) | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
+| [tensorboardX](https://github.com/lanpa/tensorboardX) | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
 
 
 ## File Organization
@@ -218,6 +233,10 @@ class CustomLoss(nn.Module):
 ```
 
 ## Recommended code structure for training your model
+
+A full example is provided in the [cifar10-example](cifar10-example/instruction.md) folder of this
+repository.
+
 Note that we used the following patterns:
 * We use *BackgroundGenerator* from *prefetch_generator* to load next batches in background  [see this issue for more information](https://github.com/IgorSusmelj/pytorch-styleguide/issues/5)
 * We use tqdm to monitor training progress and show the *compute efficiency*. This helps us find bottlenecks in our data loading pipeline.
@@ -497,3 +516,13 @@ result in *out of memory* or other errors.
 15. How does **.detach()** work in PyTorch?
 > If frees a tensor from a computation graph. A nice illustration is shown [here](http://www.bnikolic.co.uk/blog/pytorch-detach.html)
 
+
+
+## You like this repo?
+
+Please give feedback on how we can improve this style guide!
+You can open an issue or propose changes by creating a pull request.
+
+If you like this repo, don't forget to check out other frameworks from us:
+
+- [Lightly - A computer vision framework for self-supervised learning](https://github.com/lightly-ai/lightly)
