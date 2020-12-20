@@ -1,0 +1,6 @@
+**runs
+cifar10-example/cifar10
+**__pycache__
+**.ckpt
+**.json
+**.txt
