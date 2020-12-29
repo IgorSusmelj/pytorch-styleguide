@@ -130,10 +130,11 @@ Use the following pattern for simple networks with a single input and single out
 class ConvBlock(nn.Module):
     def __init__(self):
         super(ConvBlock, self).__init__()
-        block = [nn.Conv2d(...)]
-        block += [nn.ReLU()]
-        block += [nn.BatchNorm2d(...)]
-        self.block = nn.Sequential(*block)
+        self.block = nn.Sequential(
+            nn.Conv2d(...), 
+            nn.ReLU(), 
+            nn.BatchNorm2d(...)
+        )  
     
     def forward(self, x):
         return self.block(x)
