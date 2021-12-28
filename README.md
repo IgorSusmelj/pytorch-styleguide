@@ -99,13 +99,13 @@ Commonly used libraries:
 | Name | Description | Used for |
 |------|-------------|----------|
 | [torch](https://pytorch.org/) | Base Framework for working with neural networks | creating tensors, networks and training them using backprop |
-| [torchvision](https://pytorch.org/docs/stable/torchvision) | todo | data preprocessing, augmentation, postprocessing |
+| [torchvision](https://pytorch.org/docs/stable/torchvision) | PyTorch computer vision modules | image data preprocessing, augmentation, postprocessing |
 | [Pillow (PIL)](https://pillow.readthedocs.io/en/stable/) | Python Imaging Library | Loading images and storing them |
 | [Numpy](https://www.numpy.org/) | Package for scientific computing with Python | Data preprocessing & postprocessing |
 | [prefetch_generator](https://pypi.org/project/prefetch_generator/) | Library for background processing | Loading next batch in background during computation |
 | [tqdm](https://github.com/tqdm/tqdm) | Progress bar | Progress during training of each epoch |
-| [torchsummary](https://github.com/sksq96/pytorch-summary) | Keras summary for PyTorch | Displays network, it's parameters and sizes at each layer |
-| [tensorboardX](https://github.com/lanpa/tensorboardX) | Tensorboard without tensorflow | Logging experiments and showing them in tensorboard |
+| [torchinfo](https://github.com/TylerYep/torchinfo) | Print Keras-like model summary for PyTorch | Displays network, it's parameters and sizes at each layer |
+| [torch.utils.tensorboard](https://pytorch.org/docs/stable/tensorboard.html) | Tensorboard within PyTorch | Logging experiments and showing them in tensorboard |
 
 
 ## File Organization
